@@ -1,23 +1,42 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import useAxios from './hooks/useAxios';
+
+// import WordSearchInput from './components/WordSearchInput';
+
 import './App.css';
 
 function App() {
+  const [searchWord, setSearchWord] = useState("");
+
+  const [setUrl, data, loading, setLoading, error] = useAxios();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    setUrl(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchWord}`);
+    setLoading(true);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Rhythm&</h1>
+      <br/>
+      
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <h4>Word Is Bond: </h4>
+        <input 
+          type="text"
+          value={searchWord}
+          onChange={(e) => setSearchWord(e.target.value)}>
+        </input>
+      </form>
+      {!loading && data ?
+        <h1>Search Complete</h1>
+        :
+        <h1>Loading</h1>
+      }
+
+      {/* Definition component */}
     </div>
   );
 }
